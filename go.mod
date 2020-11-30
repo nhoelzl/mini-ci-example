@@ -1,4 +1,4 @@
-module github.com/your-repo/mini-example
+module github.com/nhoelzl/mini-ci-example
 
 go 1.13
 
