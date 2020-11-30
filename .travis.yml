@@ -5,16 +5,22 @@ language: go
 go:
   - 1.13.x
 
+# add docker service
 services:
   - docker
 
 script:
+  # test the code
   - go test -v ./...
+  # build the code
   - CGO_ENABLED=0 go build -o demo
   
+  # login to DockerHub - add env vars to travis-ci dashboard
   - echo "$REGISTRY_PASSWORD" | docker login --username $REGISTRY_USER --password-stdin
+  # build the docker image
   - docker build -f Dockerfile -t nhoelzl/demo:latest ./
 
+  # retrieve git SHA and re-tag docker image
   - GIT_SHA="$(git rev-parse --short HEAD)"
   - docker tag nhoelzl/demo:latest nhoelzl/demo:$GIT_SHA
 
